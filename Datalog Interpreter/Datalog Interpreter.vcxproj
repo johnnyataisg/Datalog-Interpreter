@@ -18,6 +18,29 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Database.h" />
+    <ClInclude Include="DatalogProgram.h" />
+    <ClInclude Include="Expression.h" />
+    <ClInclude Include="Header.h" />
+    <ClInclude Include="Id.h" />
+    <ClInclude Include="InputStream.h" />
+    <ClInclude Include="Interpreter.h" />
+    <ClInclude Include="LexicalAnalyzer.h" />
+    <ClInclude Include="Parameter.h" />
+    <ClInclude Include="Parser.h" />
+    <ClInclude Include="Predicate.h" />
+    <ClInclude Include="Relation.h" />
+    <ClInclude Include="Rules.h" />
+    <ClInclude Include="String.h" />
+    <ClInclude Include="Token.h" />
+    <ClInclude Include="Tuple.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="LexicalAnalyzer.cpp" />
+    <ClCompile Include="Parser.cpp" />
+    <ClCompile Include="Source.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{3EC22288-017A-4AEE-86C7-C96EF97949E8}</ProjectGuid>
@@ -114,8 +137,6 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
