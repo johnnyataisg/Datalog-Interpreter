@@ -54,6 +54,11 @@ public:
 		return this->name;
 	}
 
+	void setName(string newName)
+	{
+		this->name = newName;
+	}
+
 	void select(int col, string val)
 	{
 		for (Tuple tpl : getTuples())
@@ -75,13 +80,14 @@ public:
 
 	void project(vector<int> indexes)
 	{
+		
 		Header newHeader;
 		set<Tuple> newTuples;
 		for (int index : indexes)
 		{
-			newHeader.push_back(header.at(index));
+			newHeader.push_back(this->header.at(index));
 		}
-		for (Tuple tpl : tuples)
+		for (Tuple tpl : this->tuples)
 		{
 			Tuple tuple;
 			for (int index : indexes)
@@ -94,23 +100,36 @@ public:
 		this->tuples = newTuples;
 	}
 
+	Relation unionize(Relation relation)
+	{
+		Relation unionRelation = *this;
+		if (this->getHeader() == relation.getHeader())
+		{
+			for (Tuple tuple : relation.getTuples())
+			{
+				if (unionRelation.tuples.count(tuple) == 0)
+				{
+					unionRelation.tuples.insert(tuple);
+				}
+			}
+		}
+		return unionRelation;
+	}
+
 	Relation join(Relation relation)
 	{
 		vector<pair<int, int>> matches = this->findMatchingColumns(relation);
 		Relation JoinedRelation("Result", combineSchemes(relation.getHeader()));
-		/*for (Tuple tuple1 : this->getTuples())
+		for (Tuple tuple1 : this->getTuples())
 		{
 			for (Tuple tuple2 : relation.getTuples())
 			{
-				for (pair<int, int> pair : matches)
+				if (isJoinable(tuple1, tuple2, matches))
 				{
-					if (isJoinable)
-					{
-
-					}
+					JoinedRelation.addTuple(combineTuples(tuple1, tuple2, matches));
 				}
 			}
-		}*/
+		}
 		return JoinedRelation;
 	}
 
@@ -142,7 +161,7 @@ public:
 		}
 		for (size_t i = 0; i < header.size(); i++)
 		{
-			if (temp.find(header.at(i)) != temp.end())
+			if (temp.count(header.at(i)) == 0)
 			{
 				CombinedScheme.push_back(header.at(i));
 			}
@@ -150,14 +169,58 @@ public:
 		return CombinedScheme;
 	}
 
+	bool isJoinable(Tuple tup1, Tuple tup2, vector<pair<int, int>> matches)
+	{
+		for (pair<int, int> pair : matches)
+		{
+			if (tup1.at(pair.first) != tup2.at(pair.second))
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+
+	Tuple combineTuples(Tuple tup1, Tuple tup2, vector<pair<int, int>> matches)
+	{
+		Tuple tuple;
+		set<int> temp;
+		for (pair<int, int> pair : matches)
+		{
+			temp.insert(pair.second);
+		}
+		for (string element : tup1)
+		{
+			tuple.push_back(element);
+		}
+		for (size_t i = 0; i < tup2.size(); i++)
+		{
+			if (temp.count(i) == 0)
+			{
+				tuple.push_back(tup2.at(i));
+			}
+		}
+		return tuple;
+	}
+
 	Header getHeader()
 	{
 		return this->header;
 	}
 
+	void setHeader(Header newHeader)
+	{
+		this->header = newHeader;
+	}
+
 	set<Tuple> getTuples()
 	{
 		return this->tuples;
+	}
+
+	void setTuples(set<Tuple> newTuples)
+	{
+		this->tuples = newTuples;
 	}
 
 	string toString()

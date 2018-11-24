@@ -36,10 +36,8 @@ int main(int argc, char* argv[])
 		if (run)
 		{
 			Interpreter interpreter(parser.getDatalog());
-			cout << interpreter.getDatabase().toString();
-			//cout << interpreter.printQueryResults();
+			cout << interpreter.rulePopulateResults() << endl;
+			cout << interpreter.printQueryResults();
 		}
-	
-		system("pause");
 		return 0;
 }
